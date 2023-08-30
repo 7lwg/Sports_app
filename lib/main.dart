@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport_app_semicolon/Cubits/FootballCountries/football_countries_cubit.dart';
+import 'package:sport_app_semicolon/Cubits/LeagueCubit/league_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/SliderCubit/slider_cubit.dart';
 import 'package:sport_app_semicolon/Screens/SplashScreen.dart';
 
@@ -22,8 +23,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<FootballCountriesCubit>(
           create: (BuildContext context) => FootballCountriesCubit(),
         ),
+        BlocProvider<LeagueCubit>(
+          create: (BuildContext context) => LeagueCubit(),
+        ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           // This is the theme of your application.
@@ -44,7 +49,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home:  SplashScreen(),
+        home: SplashScreen(),
       ),
     );
   }
