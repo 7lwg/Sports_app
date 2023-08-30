@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport_app_semicolon/Cubits/FootballCountries/football_countries_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/LeagueCubit/league_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/SliderCubit/slider_cubit.dart';
+import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_goals_cubit.dart';
+import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_teams_cubit.dart';
 import 'package:sport_app_semicolon/Screens/SplashScreen.dart';
 
 void main() {
@@ -26,6 +28,14 @@ class MyApp extends StatelessWidget {
         BlocProvider<LeagueCubit>(
           create: (BuildContext context) => LeagueCubit(),
         ),
+
+        BlocProvider<GetTeamsCubit>(
+          create: (BuildContext context) => GetTeamsCubit(),
+        ),
+        BlocProvider<GetGoalsCubit>(
+          create: (BuildContext context) => GetGoalsCubit(),
+        ),
+
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -50,6 +60,8 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: SplashScreen(),
+
+
       ),
     );
   }
@@ -133,12 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
+
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sport_app_semicolon/Cubits/LeagueCubit/league_cubit.dart';
+
+import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_goals_cubit.dart';
+import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_teams_cubit.dart';
+import 'package:sport_app_semicolon/Data/Repository/get_League_Repo.dart';
+import 'package:sport_app_semicolon/Data/Repository/get_teams_data_repo.dart';
+import 'package:sport_app_semicolon/Screens/TeamsScreen.dart';
+
 import 'package:sport_app_semicolon/screens/test.dart';
 
 class LeagueScreen extends StatefulWidget {
@@ -47,9 +54,21 @@ class _LeagueScreenState extends State<LeagueScreen> {
                           padding: const EdgeInsets.all(16),
                           child: GestureDetector(
                             onTap: () {
+
+                              league_id =
+                                  state.response!.result[index].leagueKey;
+                              print(league_id);
+                              context.read<GetGoalsCubit>().getGoals();
+                              context.read<GetTeamsCubit>().getTeams();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TeamsScreen()),
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => Test()),
+
                               );
                             },
                             child: Container(
