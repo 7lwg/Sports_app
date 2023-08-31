@@ -5,6 +5,7 @@ import 'package:sport_app_semicolon/Cubits/LeagueCubit/league_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/SliderCubit/slider_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_goals_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_teams_cubit.dart';
+import 'package:sport_app_semicolon/Screens/CountriesScreen.dart';
 import 'package:sport_app_semicolon/Screens/SplashScreen.dart';
 
 void main() {
@@ -59,7 +60,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: SplashScreen(),
+        debugShowMaterialGrid: false,
+        home: FootballCountriesView(),
 
 
       ),
