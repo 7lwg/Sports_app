@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'package:sport_app_semicolon/Data/Models/get_League_Model.dart';
 import 'package:http/http.dart' as http;
 
-
-
 class GetLeagueRepo {
   Future<LeagueModel?> getLeague() async {
     try {
