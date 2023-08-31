@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sport_app_semicolon/Functions/showDialog.dart';
 import 'package:sport_app_semicolon/Screens/LeagueScreen.dart';
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -29,7 +28,7 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) =>
-                                    const LeagueScreen(countryName: '',),
+                                    const LeagueScreen(),
                               ),
                             );
                           },
