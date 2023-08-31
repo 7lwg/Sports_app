@@ -7,6 +7,7 @@ class GetLeagueRepo {
     try {
       var response = await http.get(Uri.parse(
           "https://apiv2.allsportsapi.com/football/?met=Leagues&APIkey=ba8cce3a55c7eda219fca0330f1ac53671a427aea4542ae118bd628d6b494a67"));
+          "https://apiv2.allsportsapi.com/football/?met=Leagues&APIkey=$apiKey"));
 
       var decodedResponse = jsonDecode(response.body);
       if (response.statusCode == 200) {
