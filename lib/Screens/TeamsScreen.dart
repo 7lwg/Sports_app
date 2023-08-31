@@ -124,13 +124,17 @@ class TeamsScreen extends StatelessWidget {
                                     child: Row(
                                       children: [
                                         Image.network(state.teamsresponse
-                                            .result[searchIndex].teamLogo),
+                                                .result[searchIndex].teamLogo ??
+                                            "https://upload.wikimedia.org/wikipedia/ar/f/f7/Fifa-logo.png?20140204004927"),
                                         SizedBox(
                                           width: 10,
                                         ),
                                         Text(
-                                          state.teamsresponse
-                                              .result[searchIndex].teamName,
+                                          state
+                                                  .teamsresponse
+                                                  .result[searchIndex]
+                                                  .teamName ??
+                                              "",
                                           style: TextStyle(fontSize: 20),
                                         ),
                                       ],
@@ -151,14 +155,21 @@ class TeamsScreen extends StatelessWidget {
                                     margin: EdgeInsets.all(5),
                                     child: Row(
                                       children: [
-                                        Image.network(state.teamsresponse
-                                            .result[index].teamLogo),
+                                        Image.network(
+                                          state.teamsresponse.result[index]
+                                                  .teamLogo
+                                                  .toString() ??
+                                              "https://upload.wikimedia.org/wikipedia/ar/f/f7/Fifa-logo.png?20140204004927",
+                                          width: 50,
+                                          height: 50,
+                                        ),
                                         SizedBox(
                                           width: 10,
                                         ),
                                         Text(
                                           state.teamsresponse.result[index]
-                                              .teamName,
+                                                  .teamName ??
+                                              "",
                                           style: TextStyle(fontSize: 20),
                                         ),
                                       ],
