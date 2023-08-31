@@ -54,22 +54,15 @@ class _LeagueScreenState extends State<LeagueScreen> {
                           padding: const EdgeInsets.all(16),
                           child: GestureDetector(
                             onTap: () {
-
                               league_id =
                                   state.response!.result[index].leagueKey;
                               print(league_id);
                               context.read<GetGoalsCubit>().getGoals();
                               context.read<GetTeamsCubit>().getTeams();
                               Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TeamsScreen()),
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Test()),
-
-                              );
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TeamsScreen()));
                             },
                             child: Container(
                               height:
