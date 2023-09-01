@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowMaterialGrid: false,
-        home: FootballCountriesView(),
+        home: SplashScreen(),
 
 
       ),

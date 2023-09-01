@@ -27,9 +27,9 @@ class Result {
     required this.players,
     required this.coaches,
   });
-  late final int teamKey;
-  late final String teamName;
-  late final String teamLogo;
+  late final int? teamKey;
+  late final String? teamName;
+  late final String? teamLogo;
   late final List<Players> players;
   late final List<Coaches> coaches;
 
@@ -100,54 +100,54 @@ class Players {
     required this.playerWoordworks,
     required this.playerRating,
   });
-  late final int playerKey;
+  late final int? playerKey;
   late final String? playerImage;
-  late final String playerName;
-  late final String playerNumber;
-  late final Null playerCountry;
-  late final String playerType;
-  late final String playerAge;
-  late final String playerMatchPlayed;
-  late final String playerGoals;
-  late final String playerYellowCards;
-  late final String playerRedCards;
-  late final String playerInjured;
-  late final String playerSubstituteOut;
-  late final String playerSubstitutesOnBench;
-  late final String playerAssists;
-  late final String playerBirthdate;
-  late final String playerIsCaptain;
-  late final String playerShotsTotal;
-  late final String playerGoalsConceded;
-  late final String playerFoulsCommitted;
-  late final String playerTackles;
-  late final String playerBlocks;
-  late final String playerCrossesTotal;
-  late final String playerInterceptions;
-  late final String playerClearances;
-  late final String playerDispossesed;
-  late final String playerSaves;
-  late final String playerInsideBoxSaves;
-  late final String playerDuelsTotal;
-  late final String playerDuelsWon;
-  late final String playerDribbleAttempts;
-  late final String playerDribbleSucc;
-  late final String playerPenComm;
-  late final String playerPenWon;
-  late final String playerPenScored;
-  late final String playerPenMissed;
-  late final String playerPasses;
-  late final String playerPassesAccuracy;
-  late final String playerKeyPasses;
-  late final String playerWoordworks;
-  late final String playerRating;
+  late final String? playerName;
+  late final String? playerNumber;
+  late final playerCountry;
+  late final String? playerType;
+  late final String? playerAge;
+  late final String? playerMatchPlayed;
+  late final String? playerGoals;
+  late final String? playerYellowCards;
+  late final String? playerRedCards;
+  late final String? playerInjured;
+  late final String? playerSubstituteOut;
+  late final String? playerSubstitutesOnBench;
+  late final String? playerAssists;
+  late final String? playerBirthdate;
+  late final String? playerIsCaptain;
+  late final String? playerShotsTotal;
+  late final String? playerGoalsConceded;
+  late final String? playerFoulsCommitted;
+  late final String? playerTackles;
+  late final String? playerBlocks;
+  late final String? playerCrossesTotal;
+  late final String? playerInterceptions;
+  late final String? playerClearances;
+  late final String? playerDispossesed;
+  late final String? playerSaves;
+  late final String? playerInsideBoxSaves;
+  late final String? playerDuelsTotal;
+  late final String? playerDuelsWon;
+  late final String? playerDribbleAttempts;
+  late final String? playerDribbleSucc;
+  late final String? playerPenComm;
+  late final String? playerPenWon;
+  late final String? playerPenScored;
+  late final String? playerPenMissed;
+  late final String? playerPasses;
+  late final String? playerPassesAccuracy;
+  late final String? playerKeyPasses;
+  late final String? playerWoordworks;
+  late final String? playerRating;
 
   Players.fromJson(Map<String, dynamic> json) {
     playerKey = json['player_key'];
-    playerImage = null;
+    playerImage = json['player_image'];
     playerName = json['player_name'];
     playerNumber = json['player_number'];
-    playerCountry = null;
+    playerCountry = json['player_country'];
     playerType = json['player_type'];
     playerAge = json['player_age'];
     playerMatchPlayed = json['player_match_played'];
@@ -239,14 +239,14 @@ class Coaches {
     this.coachCountry,
     this.coachAge,
   });
-  late final String coachName;
-  late final Null coachCountry;
-  late final Null coachAge;
+  late final String? coachName;
+  late final coachCountry;
+  late final coachAge;
 
   Coaches.fromJson(Map<String, dynamic> json) {
     coachName = json['coach_name'];
-    coachCountry = null;
-    coachAge = null;
+    coachCountry = json['coach_country'];
+    coachAge = json['coach_age'];
   }
 
   Map<String, dynamic> toJson() {
