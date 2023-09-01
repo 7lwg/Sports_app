@@ -25,3 +25,4 @@ class LeagueCubit extends Cubit<LeagueState> {
     }
   }
 }
+
