@@ -29,14 +29,12 @@ class MyApp extends StatelessWidget {
         BlocProvider<LeagueCubit>(
           create: (BuildContext context) => LeagueCubit(),
         ),
-
         BlocProvider<GetTeamsCubit>(
           create: (BuildContext context) => GetTeamsCubit(),
         ),
         BlocProvider<GetGoalsCubit>(
           create: (BuildContext context) => GetGoalsCubit(),
         ),
-
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -62,8 +60,6 @@ class MyApp extends StatelessWidget {
         ),
         debugShowMaterialGrid: false,
         home: SplashScreen(),
-
-
       ),
     );
   }
@@ -147,7 +143,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-
       ),
     );
   }
