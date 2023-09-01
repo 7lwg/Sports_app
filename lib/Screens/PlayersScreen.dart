@@ -19,7 +19,7 @@ class PlayersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: MediaQuery.of(context).size.height * (1 / 10),
+        toolbarHeight: MediaQuery.of(context).size.height * (1 / 20),
         backgroundColor: Colors.red,
         title: Center(child: Text('Players')),
       ),

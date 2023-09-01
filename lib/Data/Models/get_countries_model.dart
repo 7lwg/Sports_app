@@ -27,7 +27,7 @@ class Result {
     this.countryLogo,
   });
   late final int countryKey;
-  late final String countryName;
+  late final String? countryName;
   late final String? countryIso2;
   late final String? countryLogo;
 

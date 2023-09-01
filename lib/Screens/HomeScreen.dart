@@ -29,7 +29,6 @@ class HomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) =>
-                                    const LeagueScreen(),
                                     FootballCountriesView(),
                               ),
                             );
