@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
+
+// import 'package:sport_app_semicolon/Classes/DrawerClass.dart';
 import 'package:sport_app_semicolon/Cubits/PlayersCubit/players_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_goals_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_teams_cubit.dart';
 import 'package:sport_app_semicolon/Data/Repository/get_players_repo.dart';
+import 'package:sport_app_semicolon/Functions/DrawerClass.dart';
 
 // ignore: must_be_immutable
 class PlayersScreen extends StatelessWidget {
@@ -23,11 +27,22 @@ class PlayersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: myDrawer(),
       appBar: AppBar(
+        leading: Builder(builder: (context) {
+          return IconButton(
+            color: Colors.white,
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            icon: Icon(Icons.menu),
+          );
+        }),
         automaticallyImplyLeading: false,
         toolbarHeight: MediaQuery.of(context).size.height * (1 / 20),
         backgroundColor: Colors.red,
-        title: Center(child: Text('Players')),
+        centerTitle: true,
+        title: Text('Players'),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -152,115 +167,128 @@ class PlayersScreen extends StatelessWidget {
                                           'Player\'s info',
                                           style: GoogleFonts.lato(),
                                         ),
-                                        content: BlocBuilder<GetPlayersCubit,
-                                            GetPlayersState>(
-                                          builder: (context, state) {
-                                            if (state is GetPlayersLoading) {
-                                              return const Center(
-                                                  child:
-                                                      CircularProgressIndicator());
-                                            } else if (state
-                                                is GetPlayersSuccess) {
-                                              return Column(
-                                                children: [
-                                                  Text(
-                                                    "Name : ${state.playersresponse!.result[index].playerName ?? ""}",
-                                                    style: GoogleFonts.lato(
-                                                        fontSize: 15),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    "Number : ${state.playersresponse!.result[index].playerNumber ?? ""}",
-                                                    style: GoogleFonts.lato(
-                                                        fontSize: 15),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    "Country : ${state.playersresponse!.result[index].playerCountry ?? ""}",
-                                                    style: GoogleFonts.lato(
-                                                        fontSize: 15),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Center(
-                                                      child: Container(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            1 /
-                                                            3,
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(state
-                                                                    .playersresponse!
-                                                                    .result[
-                                                                        index]
-                                                                    .playerImage ??
-                                                                'https://cdn.britannica.com/51/190751-050-147B93F7/soccer-ball-goal.jpg'),
-                                                            fit: BoxFit.fill)),
-                                                  )),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    "Blocks : ${state.playersresponse!.result[index].playerBlocks ?? ""}",
-                                                    style: GoogleFonts.lato(
-                                                        fontSize: 15),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    "Age : ${state.playersresponse.result[index].playerAge} ",
-                                                    style: GoogleFonts.lato(
-                                                        fontSize: 15),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    "Yellow Cards Num : ${state.playersresponse!.result[index].playerYellowCards ?? ""}",
-                                                    style: GoogleFonts.lato(
-                                                        fontSize: 15),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    "Red Cards Num : ${state.playersresponse!.result[index].playerRedCards ?? ""}",
-                                                    style: GoogleFonts.lato(
-                                                        fontSize: 15),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    "Goals : ${state.playersresponse!.result[index].playerGoals ?? ""}",
-                                                    style: GoogleFonts.lato(
-                                                        fontSize: 15),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    "Assists : ${state.playersresponse!.result[index].playerAssists ?? ""}",
-                                                    style: GoogleFonts.lato(
-                                                        fontSize: 15),
-                                                  ),
-                                                ],
-                                              );
-                                            } else {
-                                              return const Center(
-                                                  child: Text(
-                                                      "Something wrong happened"));
-                                            }
-                                          },
+                                        content: SingleChildScrollView(
+                                          child: BlocBuilder<GetPlayersCubit,
+                                              GetPlayersState>(
+                                            builder: (context, state) {
+                                              if (state is GetPlayersLoading) {
+                                                return const Center(
+                                                    child:
+                                                        CircularProgressIndicator());
+                                              } else if (state
+                                                  is GetPlayersSuccess) {
+                                                return Column(
+                                                  children: [
+                                                    Text(
+                                                      "Name : ${state.playersresponse!.result[index].playerName ?? ""}",
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 15),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "Number : ${state.playersresponse!.result[index].playerNumber ?? ""}",
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 15),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "Country : ${state.playersresponse!.result[index].playerCountry ?? ""}",
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 15),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Center(
+                                                        child: Container(
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              1 /
+                                                              3,
+                                                      decoration: BoxDecoration(
+                                                          image: DecorationImage(
+                                                              image: NetworkImage(state
+                                                                      .playersresponse!
+                                                                      .result[
+                                                                          index]
+                                                                      .playerImage ??
+                                                                  'https://cdn.britannica.com/51/190751-050-147B93F7/soccer-ball-goal.jpg'),
+                                                              fit:
+                                                                  BoxFit.fill)),
+                                                    )),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "Matches Played : ${state.playersresponse!.result[index].playerMatchPlayed ?? ""}",
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 15),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "Age : ${state.playersresponse.result[index].playerAge} ",
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 15),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "Yellow Cards Num : ${state.playersresponse!.result[index].playerYellowCards ?? ""}",
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 15),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "Red Cards Num : ${state.playersresponse!.result[index].playerRedCards ?? ""}",
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 15),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "Goals : ${state.playersresponse!.result[index].playerGoals ?? ""}",
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 15),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                      "Assists : ${state.playersresponse!.result[index].playerAssists ?? ""}",
+                                                      style: GoogleFonts.lato(
+                                                          fontSize: 15),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    ElevatedButton(
+                                                        onPressed: () {
+                                                          Share.share(
+                                                              "Name : ${state.playersresponse!.result[index].playerName ?? ""}\nNumber : ${state.playersresponse!.result[index].playerNumber ?? ""}");
+                                                        },
+                                                        child: Text(
+                                                            "Share Player"))
+                                                  ],
+                                                );
+                                              } else {
+                                                return const Center(
+                                                    child: Text(
+                                                        "Something wrong happened"));
+                                              }
+                                            },
+                                          ),
                                         ),
                                         actions: <Widget>[
                                           TextButton(
@@ -287,9 +315,16 @@ class PlayersScreen extends StatelessWidget {
                                 margin: EdgeInsets.all(5),
                                 child: Row(
                                   children: [
-                                    Image.network(state.playersresponse
-                                            .result[index].playerImage ??
-                                        "https://upload.wikimedia.org/wikipedia/ar/f/f7/Fifa-logo.png?20140204004927"),
+                                    Image.network(
+                                      state.playersresponse.result[index]
+                                              .playerImage ??
+                                          "https://upload.wikimedia.org/wikipedia/ar/f/f7/Fifa-logo.png?20140204004927",
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.network(
+                                            "https://upload.wikimedia.org/wikipedia/ar/f/f7/Fifa-logo.png?20140204004927");
+                                      },
+                                    ),
                                     SizedBox(
                                       width: 10,
                                     ),

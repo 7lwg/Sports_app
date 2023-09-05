@@ -5,6 +5,7 @@ import 'package:sport_app_semicolon/Cubits/LeagueCubit/league_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_goals_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_teams_cubit.dart';
 import 'package:sport_app_semicolon/Data/Repository/get_teams_data_repo.dart';
+import 'package:sport_app_semicolon/Functions/DrawerClass.dart';
 import 'package:sport_app_semicolon/Screens/TeamsScreen.dart';
 import 'package:sport_app_semicolon/screens/test.dart';
 
@@ -25,7 +26,19 @@ class _LeagueScreenState extends State<LeagueScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: myDrawer(),
         appBar: AppBar(
+          leading: Builder(
+            builder: (context) {
+              return IconButton(
+                color: Colors.white,
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: Icon(Icons.menu),
+              );
+            },
+          ),
           centerTitle: true,
           title: Text(
             "LEAGUES",

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sport_app_semicolon/Cubits/SliderCubit/slider_cubit.dart';
+import 'package:sport_app_semicolon/Screens/LoginScreen.dart';
 import 'HomeScreen.dart';
 import 'test.dart';
 // import 'package:sports_app/screens/test.dart';
@@ -86,11 +88,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.setBool('showHome', true);
                     Navigator.of(context).pop();
                     Navigator.of(context).push(
                       MaterialPageRoute<void>(
-                        builder: (BuildContext context) => const HomeScreen(),
+                        builder: (BuildContext context) => LoginScreen(),
                       ),
                     );
                   },

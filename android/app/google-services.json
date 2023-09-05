@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "742080786739",
+    "project_id": "sports-app-flutter",
+    "storage_bucket": "sports-app-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742080786739:android:d924a05818e9a66d86ce46",
+        "android_client_info": {
+          "package_name": "com.example.sport_app_semicolon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742080786739-fsmlpekc4u05bd9d84r2u5iiihkue6b7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sport_app_semicolon",
+            "certificate_hash": "1206b4ae536d8ecb0e7df8c310521b280a50ee2b"
+          }
+        },
+        {
+          "client_id": "742080786739-t57cvhbh81v32ucadav21jrrjd6o602m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVyP4QlTfyW9DSJFW3fupsClc7RW6g57k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742080786739-8f8rdq8riv778o37com5q491tccsrl6p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

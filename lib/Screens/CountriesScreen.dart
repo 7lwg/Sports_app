@@ -2,13 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sport_app_semicolon/Cubits/FootballCountries/football_countries_cubit.dart';
 import 'package:sport_app_semicolon/Data/Repository/get_League_Repo.dart';
+import 'package:sport_app_semicolon/Functions/DrawerClass.dart';
 import 'package:sport_app_semicolon/Screens/LeagueScreen.dart';
-  
+
 class FootballCountriesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: myDrawer(),
       appBar: AppBar(
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              color: Colors.black,
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: Icon(Icons.menu),
+            );
+          },
+        ),
+        automaticallyImplyLeading: false,
         title: Center(child: Text('Football Countries')),
         actions: [
           IconButton(
@@ -134,7 +148,6 @@ class DataSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    
     return BlocBuilder<FootballCountriesCubit, FootballCountriesState>(
       builder: (context, state) {
         if (state is FootballCountriesSuccess) {

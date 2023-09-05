@@ -1,29 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sport_app_semicolon/Functions/showDialog.dart';
-import 'package:sport_app_semicolon/Screens/LeagueScreen.dart';
+// import 'package:sport_app_semicolon/Classes/DrawerClass.dart';
+
+import 'package:sport_app_semicolon/Cubits/PlayersCubit/players_cubit.dart';
+import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_teams_cubit.dart';
+import 'package:sport_app_semicolon/Functions/DrawerClass.dart';
 import 'package:sport_app_semicolon/Screens/CountriesScreen.dart';
+import 'package:sport_app_semicolon/Screens/PlayersScreen.dart';
+import 'package:sport_app_semicolon/Screens/TeamsScreen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(color: Colors.black),
-        child: Row(
-          children: [
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    // color: Colors.red,
-                    child: Column(
-                      children: [
-                        GestureDetector(
+        drawer: myDrawer(),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.black,
+          title: Text(
+            "SPORTS",
+            style: GoogleFonts.lato(color: Colors.white, fontSize: 30),
+          ),
+          centerTitle: true,
+          leading: Builder(builder: (context) {
+            return IconButton(
+              color: Colors.white,
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: Icon(Icons.menu),
+            );
+          }),
+        ),
+        body: Container(
+          color: Colors.black,
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          child: GridView.count(
+            childAspectRatio: 0.54,
+            crossAxisCount: 2,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
@@ -43,77 +72,47 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   fit: BoxFit.fill),
                             ),
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            height: MediaQuery.of(context).size.height * 0.45,
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          child: Text(
-                            "Football",
-                            style: GoogleFonts.lato(
-                                fontSize: 20, color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showMyDialog(context);
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    "assets/images/cricket.png",
-                                  ),
-                                  fit: BoxFit.fill),
-                            ),
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            height: MediaQuery.of(context).size.height * 0.45,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showMyDialog(context);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                "Cricket",
-                                style: GoogleFonts.lato(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
                       ),
-                    ),
-                  )
-                ],
+                      Text(
+                        "Football",
+                        style:
+                            GoogleFonts.lato(fontSize: 20, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            Container(
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      showMyDialog(context);
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      // color: Colors.red,
-                      child: Column(
-                        children: [
-                          Container(
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Not Available yet'),
+                                    content: Text('Coming Soon'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); // Close the dialog
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               shape: BoxShape.rectangle,
@@ -123,65 +122,122 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   fit: BoxFit.fill),
                             ),
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            height: MediaQuery.of(context).size.height * 0.45,
                           ),
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            child: Text(
-                              "Basketball",
-                              style: GoogleFonts.lato(
-                                  fontSize: 20, color: Colors.white),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Text(
+                        "Basketball",
+                        style:
+                            GoogleFonts.lato(fontSize: 20, color: Colors.white),
+                      ),
+                    ],
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      showMyDialog(context);
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      child: Column(
-                        children: [
-                          Container(
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Not Available yet'),
+                                    content: Text('Coming Soon'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pop(); // Close the dialog
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                   image: AssetImage(
-                                    "assets/images/tennis.png",
+                                    "assets/images/cricket.png",
                                   ),
                                   fit: BoxFit.fill),
                             ),
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            height: MediaQuery.of(context).size.height * 0.45,
-                            // child: Image.asset(
-                            //   'assets/images/football.png',
-                            //   fit: BoxFit.fill,
-                            // ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            child: Text(
-                              "Tennis",
-                              style: GoogleFonts.lato(
-                                  fontSize: 20, color: Colors.white),
+                        ),
+                      ),
+                      Text(
+                        "Cricket",
+                        style:
+                            GoogleFonts.lato(fontSize: 20, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height,
+                  child: Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Not Available yet'),
+                                      content: Text('Coming Soon'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text('OK'),
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Close the dialog
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                      "assets/images/tennis.png",
+                                    ),
+                                    fit: BoxFit.fill),
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        Text(
+                          "Tennis",
+                          style: GoogleFonts.lato(
+                              fontSize: 20, color: Colors.white),
+                        ),
+                      ],
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        ));
   }
 }
