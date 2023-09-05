@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:sport_app_semicolon/Cubits/FootballCountries/football_countries_cubit.dart';
 import 'package:sport_app_semicolon/Data/Models/get_countries_model.dart';
 import 'package:sport_app_semicolon/Data/Repository/get_League_Repo.dart';
+import 'package:sport_app_semicolon/Functions/DrawerClass.dart';
 import 'package:sport_app_semicolon/Screens/LeagueScreen.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:sport_app_semicolon/Screens/map.dart';
@@ -28,6 +29,10 @@ class _FootballCountriesViewState extends State<FootballCountriesView> {
 
   var _currentAdress;
   var _currentName;
+  var _country_name;
+  var _country_number;
+  var _country_index;
+  var countries_name = [];
 
   List<Map<String, dynamic>> fou = [];
 
@@ -55,6 +60,7 @@ class _FootballCountriesViewState extends State<FootballCountriesView> {
       Placemark place = Placemarks[0];
       setState(() {
         _currentAdress = "${place.administrativeArea}, ${place.country}";
+        _country_name = place.country;
         _currentName = place.country;
       });
     } catch (error) {
@@ -65,7 +71,18 @@ class _FootballCountriesViewState extends State<FootballCountriesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: myDrawer(),
       appBar: AppBar(
+        leading: Builder(builder: (context) {
+          return IconButton(
+            color: Colors.black,
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            icon: Icon(Icons.menu),
+          );
+        }),
+        automaticallyImplyLeading: false,
         title: Text("البلاد يا معلم"),
         centerTitle: true,
       ),
@@ -104,8 +121,13 @@ class _FootballCountriesViewState extends State<FootballCountriesView> {
                     _currentLocation = await _getCurrentLocation();
                     await _getAddressFromCoordinates();
                     print(_currentLocation);
-                    // print('//*/*/*/${_currentAdress}');
+                    for (int i = 0; i < _country_number; i++) {
+                      if (_country_name == countries_name[i]) {
+                        _country_index = i + 1;
+                      }
+                    }
                     print('test here');
+                    print(_country_index);
                   },
                   icon: Icon(Icons.location_on))
             ],
@@ -117,6 +139,14 @@ class _FootballCountriesViewState extends State<FootballCountriesView> {
                   BlocBuilder<FootballCountriesCubit, FootballCountriesState>(
                 builder: (context, state) {
                   if (state is FootballCountriesSuccess) {
+                    for (int i = 0; i < state.response.result.length; i++) {
+                      countries_name
+                          .add(state.response.result[i].countryName.toString());
+                      // countries_name.add(i);
+
+                      // print(
+                      //     "${state.response.result[i].countryName.toString()}, ${i}");
+                    }
                     return GridView.builder(
                       // controller: ScrollController(),
                       gridDelegate:
@@ -125,6 +155,7 @@ class _FootballCountriesViewState extends State<FootballCountriesView> {
                       ),
                       itemCount: state.response.result.length,
                       itemBuilder: (context, index) {
+                        _country_number = state.response.result.length;
                         return Padding(
                           padding: const EdgeInsets.all(8),
                           child: GestureDetector(

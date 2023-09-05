@@ -19,6 +19,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
         drawer: myDrawer(),
         appBar: AppBar(
+          toolbarHeight: MediaQuery.of(context).size.height * 1 / 15,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.black,
           title: Text(
@@ -37,11 +38,17 @@ class HomeScreen extends StatelessWidget {
           }),
         ),
         body: Container(
-          color: Colors.black,
-          height: MediaQuery.of(context).size.height,
+          color: Colors.white,
+          height: double.infinity,
           width: double.infinity,
           child: GridView.count(
-            childAspectRatio: 0.54,
+            physics: NeverScrollableScrollPhysics(),
+            // childAspectRatio: 0.54,
+
+            childAspectRatio: ((MediaQuery.of(context).size.width) /
+                (MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).size.height * 1 / 15)),
+
             crossAxisCount: 2,
             children: [
               Padding(
