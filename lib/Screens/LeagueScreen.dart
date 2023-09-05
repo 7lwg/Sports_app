@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sport_app_semicolon/Cubits/LeagueCubit/league_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_goals_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_teams_cubit.dart';
+import 'package:sport_app_semicolon/Data/Repository/get_players_repo.dart';
 import 'package:sport_app_semicolon/Data/Repository/get_teams_data_repo.dart';
 import 'package:sport_app_semicolon/Functions/DrawerClass.dart';
 import 'package:sport_app_semicolon/Screens/TeamsScreen.dart';
@@ -64,6 +65,8 @@ class _LeagueScreenState extends State<LeagueScreen> {
                           padding: const EdgeInsets.all(16),
                           child: GestureDetector(
                             onTap: () {
+                              team_name = "";
+                              team_id = "";
                               league_id =
                                   state.response!.result[index].leagueKey;
                               print(league_id);

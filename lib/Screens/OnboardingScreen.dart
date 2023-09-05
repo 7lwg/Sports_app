@@ -71,9 +71,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   enlargeFactor: 0.3,
                   onPageChanged: (index, reason) => {
                     active_page = index,
-                    // setState(
-                    //   () {},
-                    // ),
                     context.read<SliderCubit>().Slider(),
                   },
                   scrollDirection: Axis.horizontal,

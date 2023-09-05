@@ -2,27 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
-
-// import 'package:sport_app_semicolon/Classes/DrawerClass.dart';
 import 'package:sport_app_semicolon/Cubits/PlayersCubit/players_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_goals_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_teams_cubit.dart';
 import 'package:sport_app_semicolon/Data/Repository/get_players_repo.dart';
+import 'package:sport_app_semicolon/Data/Repository/get_teams_data_repo.dart';
 import 'package:sport_app_semicolon/Functions/DrawerClass.dart';
 
-// ignore: must_be_immutable
 class PlayersScreen extends StatelessWidget {
   PlayersScreen({super.key});
-
-  // var search = "Liverpool";
-
-  static String search_plyer = "";
-
-  var PlyersearchIndex;
-
-  var number;
-
-  var penalty_goals = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +19,7 @@ class PlayersScreen extends StatelessWidget {
       appBar: AppBar(
         leading: Builder(builder: (context) {
           return IconButton(
-            color: Colors.white,
+            color: Colors.black,
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -40,9 +28,9 @@ class PlayersScreen extends StatelessWidget {
         }),
         automaticallyImplyLeading: false,
         toolbarHeight: MediaQuery.of(context).size.height * (1 / 20),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text('Players'),
+        title: Text('${team_name} Players'),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -51,15 +39,13 @@ class PlayersScreen extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.only(top: 10),
-              width: 300,
-              height: 50,
+              width: MediaQuery.of(context).size.width * 8 / 10,
+              height: MediaQuery.of(context).size.width * 1.3 / 10,
               child: TextField(
                 onChanged: (text) {
-                  // Save the text in the variable
                   player_name = text;
                   team_id = temp;
                   context.read<GetPlayersCubit>().getPlayers();
-                  // search = "Mo";
                 },
                 textAlign: TextAlign.left,
                 decoration: InputDecoration(
@@ -94,71 +80,11 @@ class PlayersScreen extends StatelessWidget {
                   child: Container(
                     child: Column(
                       children: [
-                        // if (search != "" && number != 1)
-                        // Text('Invalid Search'),
                         Expanded(
                             child: ListView.builder(
-                          // itemCount: state.response.result.length,
                           itemBuilder: (context, index) {
-                            // search = 'mo';
-                            // search_name = search;
-                            // number = state.playersresponse.result.length;
-                            // if (search != "") {
-                            //   for (int i = 0;
-                            //       i <
-                            //           state.playersresponse.result
-                            //               .length;
-                            //       i++) {
-                            //     if (search ==
-                            //         state.playersresponse.result[i]
-                            //             .playerName) {
-                            //       PlyersearchIndex = i;
-                            //       number = 1;
-                            //     }
-                            //   }
-                            // }
-                            // if (number == 1) {
-                            //   return Container(
-                            //     width: 40,
-                            //     height: 40,
-                            //     decoration: BoxDecoration(
-                            //       color: Colors.white,
-                            //       border: Border.all(
-                            //         color: Colors.black,
-                            //         width: 2,
-                            //       ),
-                            //     ),
-                            //     margin: EdgeInsets.all(5),
-                            //     child: Row(
-                            //       children: [
-                            //         Image.network(state
-                            //                 .playersresponse
-                            //                 .result[PlyersearchIndex]
-                            //                 .playerImage ??
-                            //             "https://upload.wikimedia.org/wikipedia/ar/f/f7/Fifa-logo.png?20140204004927"),
-                            //         SizedBox(
-                            //           width: 10,
-                            //         ),
-                            //         Text(
-                            //           state
-                            //                   .playersresponse
-                            //                   .result[PlyersearchIndex]
-                            //                   .playerName
-                            //                   .toString() ??
-                            //               "",
-                            //           style: TextStyle(fontSize: 20),
-                            //         ),
-                            //         SizedBox(
-                            //           width: 10,
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   );
-                            // } else {
-                            // number = state.playersresponse.result.length;
                             return InkWell(
                               onTap: () {
-                                // context.read<GetPlayersCubit>().getPlayers();
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -343,10 +269,7 @@ class PlayersScreen extends StatelessWidget {
                               ),
                             );
                           },
-                          // },
-                          // itemCount: 10,
-                          itemCount:
-                              number ?? state.playersresponse.result.length,
+                          itemCount: state.playersresponse.result.length,
                         ))
                       ],
                     ),
@@ -354,7 +277,7 @@ class PlayersScreen extends StatelessWidget {
                 );
               } else {
                 return Center(
-                  child: Text('Somethinge went wrone'),
+                  child: Text('Invalid Search'),
                 );
               }
             })

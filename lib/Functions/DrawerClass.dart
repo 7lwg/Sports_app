@@ -26,7 +26,8 @@ class _myDrawerState extends State<myDrawer> {
       bool? google_logedin = prefs.getBool('google_logedin') ?? false;
 
       bool? phone_logedin = prefs.getBool('phone_logedin') ?? false;
-      String phone_number = prefs.getString('phone_number') ?? "";
+      String phone_number = prefs.getString('phone_number').toString();
+      print("*//**//*/**/*/**//**/**//*${phone_number}");
 
       String google_name = prefs.getString('google_name') ?? "";
       String google_number = prefs.getString('google_number') ?? "";
@@ -51,6 +52,7 @@ class _myDrawerState extends State<myDrawer> {
         phone = phone_number;
         first_name = null;
         last_name = null;
+        print("*//**//*/**/*/**//**/**//*${phone}");
         setState(() {});
         return name;
       }
@@ -70,21 +72,21 @@ class _myDrawerState extends State<myDrawer> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Phone Number :${phone ?? ""}",
+              "Phone Number :${phone}",
               style: GoogleFonts.lato(color: Colors.white, fontSize: 20),
             ),
             SizedBox(
               height: 20,
             ),
             Text(
-              "First Name :${first_name ?? ""}",
+              "First Name :${first_name}",
               style: GoogleFonts.lato(color: Colors.white, fontSize: 20),
             ),
             SizedBox(
               height: 20,
             ),
             Text(
-              "Last Name :${last_name ?? ""}",
+              "Last Name :${last_name}",
               style: GoogleFonts.lato(color: Colors.white, fontSize: 20),
             ),
             Spacer(),

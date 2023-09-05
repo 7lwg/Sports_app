@@ -11,7 +11,7 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-bool? logedin;
+bool logedin = false; /////////
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
@@ -28,6 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
       if (google_logedin == true || phone_logedin == true) {
         logedin = true;
       }
+
+      print("/*/**/*//*/***//****/${logedin}");
+
       // showHome = prefs.getBool('showHome');
       return showHome ?? false;
     }
@@ -36,6 +39,10 @@ class _SplashScreenState extends State<SplashScreen> {
       bool? showHome = await getPrefs();
       Navigator.pushReplacement(
         context,
+        //   MaterialPageRoute(
+        //     builder: (context) => HomeScreen(),
+        //   ),
+        // );
         MaterialPageRoute(
             builder: (context) => showHome!
                 ? (logedin! ? HomeScreen() : LoginScreen())

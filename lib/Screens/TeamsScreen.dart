@@ -12,13 +12,6 @@ import 'package:sport_app_semicolon/Screens/PlayersScreen.dart';
 class TeamsScreen extends StatelessWidget {
   TeamsScreen({super.key});
 
-  // var search = "Liverpool";
-  var search = "";
-
-  var searchIndex = 0;
-  var number;
-  var penalty_goals = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,11 +51,10 @@ class TeamsScreen extends StatelessWidget {
                     children: [
                       Container(
                         padding: EdgeInsets.only(top: 10),
-                        width: 300,
-                        height: 50,
+                        width: MediaQuery.of(context).size.width * 8 / 10,
+                        height: MediaQuery.of(context).size.width * 1.3 / 10,
                         child: TextField(
                           onChanged: (text) {
-                            // Save the text in the variable
                             team_name = text;
                             league_id = temp2;
                             context.read<GetGoalsCubit>().getGoals();
@@ -101,24 +93,19 @@ class TeamsScreen extends StatelessWidget {
                           return Expanded(
                               child: Column(
                             children: [
-                              // if (search != "" && number != 1)
-                              //   Text('Invalid Search'),
                               Expanded(
                                   child: ListView.builder(
                                 itemBuilder: (context, index) {
-                                  number = state.teamsresponse.result.length;
-                                  team_id = state.teamsresponse
-                                          .result[searchIndex].teamKey ??
+                                  team_id = state.teamsresponse.result[index]
+                                          .teamKey ??
                                       10;
                                   print(team_id);
-
-                                  // team_id = state.teamsresponse.result[index]
-                                  //         .teamKey ??
-                                  //     10;
-                                  // print(team_id);
-                                  number = state.teamsresponse.result.length;
                                   return InkWell(
                                     onTap: () {
+                                      player_name = "";
+                                      team_name = state.teamsresponse
+                                              .result[index].teamName ??
+                                          "";
                                       team_id = state.teamsresponse
                                               .result[index].teamKey ??
                                           10;
@@ -173,14 +160,13 @@ class TeamsScreen extends StatelessWidget {
                                   );
                                 },
                                 // itemCount: state.response.result.length,
-                                itemCount:
-                                    number ?? state.teamsresponse.result.length,
+                                itemCount: state.teamsresponse.result.length,
                               ))
                             ],
                           ));
                         } else {
                           return Center(
-                            child: Text('Something went wrong'),
+                            child: Text("Something went wrong"),
                           );
                         }
                       })

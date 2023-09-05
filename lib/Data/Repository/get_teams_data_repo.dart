@@ -8,9 +8,7 @@ import 'package:sport_app_semicolon/Data/Repository/get_players_repo.dart';
 
 var league_id;
 var temp2;
-var team_name;
-String apiKey =
-    "ba8cce3a55c7eda219fca0330f1ac53671a427aea4542ae118bd628d6b494a67";
+String team_name = "";
 
 class GetTeamsRepo {
   Future<GetTeamsModel?> getTeams() async {
@@ -18,7 +16,7 @@ class GetTeamsRepo {
     try {
       var teamsresponse = await http.get(
         Uri.parse(
-            "https://apiv2.allsportsapi.com/football/?&met=Teams&leagueId=${league_id}&teamName=${team_name ?? ""}&APIkey=ba8cce3a55c7eda219fca0330f1ac53671a427aea4542ae118bd628d6b494a67"),
+            "https://apiv2.allsportsapi.com/football/?&met=Teams&leagueId=${league_id}&teamName=${team_name}&APIkey=ba8cce3a55c7eda219fca0330f1ac53671a427aea4542ae118bd628d6b494a67"),
       );
 
       var decodedResponse = jsonDecode(teamsresponse.body);
@@ -30,13 +28,9 @@ class GetTeamsRepo {
 
         return myResponse;
       } else {
-        print("faaaalse");
-
         return null;
       }
     } catch (error) {
-      print("faaaalse ${error}");
-
       return null;
     }
   }

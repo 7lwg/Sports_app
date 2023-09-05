@@ -69,6 +69,7 @@ class LoginScreen extends StatelessWidget {
                       if (phone_number_regex.hasMatch(value!) == false) {
                         return 'Invalid Phone number';
                       } else {
+                        phone_number = value;
                         return null;
                       }
                     },
@@ -169,6 +170,7 @@ class LoginScreen extends StatelessWidget {
                           prefs.setBool('phone_logedin', true);
                           prefs.setBool('google_logedin', false);
                           prefs.setString('phone_number', phone_number);
+                          print(phone_number);
                         }
                       },
                       style: ElevatedButton.styleFrom(
