@@ -4,18 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sport_app_semicolon/Cubits/FootballCountries/football_countries_cubit.dart';
 import 'package:sport_app_semicolon/Data/Models/get_countries_model.dart';
 import 'package:sport_app_semicolon/Data/Repository/get_League_Repo.dart';
 import 'package:sport_app_semicolon/Functions/DrawerClass.dart';
 import 'package:sport_app_semicolon/Screens/LeagueScreen.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:sport_app_semicolon/Screens/map.dart';
 import 'package:flutter/material.dart';
-// import 'package:geocoding/geocoding.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:geolocator/geolocator.dart';
-// import 'package:awesome_dialog/awesome_dialog.dart';
 
 class FootballCountriesView extends StatefulWidget {
   @override
@@ -23,6 +18,10 @@ class FootballCountriesView extends StatefulWidget {
 }
 
 class _FootballCountriesViewState extends State<FootballCountriesView> {
+  final ScrollController _scrollController = ScrollController();
+
+  double rowHeight = 80;
+
   Position? _currentLocation;
   late bool servicePermeation = false;
   late LocationPermission permission;
@@ -33,6 +32,9 @@ class _FootballCountriesViewState extends State<FootballCountriesView> {
   var _country_number;
   var _country_index;
   var countries_name = [];
+
+  final itemController = ItemScrollController();
+  final itemListener = ItemPositionsListener.create();
 
   List<Map<String, dynamic>> fou = [];
 
@@ -73,6 +75,7 @@ class _FootballCountriesViewState extends State<FootballCountriesView> {
     return Scaffold(
       drawer: myDrawer(),
       appBar: AppBar(
+        backgroundColor: const Color(0xfff0a307),
         leading: Builder(builder: (context) {
           return IconButton(
             color: Colors.black,
@@ -83,507 +86,186 @@ class _FootballCountriesViewState extends State<FootballCountriesView> {
           );
         }),
         automaticallyImplyLeading: false,
-        title: Text("البلاد يا معلم"),
+        title: Text("Countries"),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 5.0, // ارتفاع الهامش العمودي
-                      horizontal: 16.0, // هامش أفقي
-                    ),
-                    hintText: _currentAdress ?? 'Please click on the pin',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(
-                        color: Colors.black
-                            .withOpacity(0.5), // لون الإطار مع الشفافية
+      body: Container(
+        color: Colors.grey[850],
+        child: Column(
+          children: [
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(color: Colors.white, width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(100)),
                       ),
-                    ),
-                    // تحكم في شفافية النص التوضيحي
-                    hintStyle: TextStyle(
-                      color:
-                          Colors.black.withOpacity(0.5), // لون النص مع الشفافية
-                    ),
-                  ),
-                  onChanged: (text) {
-                    text = "${_currentAdress}";
-                  },
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(10),
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 1 / 20,
+                      child: Text(
+                        _currentAdress ?? "please Click on the pin",
+                        style: TextStyle(color: Colors.white),
+                      )),
                 ),
-              ),
-              IconButton(
+                IconButton(
                   onPressed: () async {
                     _currentLocation = await _getCurrentLocation();
                     await _getAddressFromCoordinates();
                     print(_currentLocation);
                     for (int i = 0; i < _country_number; i++) {
                       if (_country_name == countries_name[i]) {
-                        _country_index = i + 1;
+                        _country_index = i;
                       }
                     }
                     print('test here');
+                    print(_country_name);
+
+                    double offset = (_country_index / 3) * (rowHeight + 21);
+
+                    _scrollController.animateTo(
+                      offset,
+                      duration: const Duration(milliseconds: 1 * 1000),
+                      curve: Curves.easeInOut,
+                    );
+
                     print(_country_index);
                   },
-                  icon: Icon(Icons.location_on))
-            ],
-          ),
-          Expanded(
-            child: Container(
-              // height: 500,
-              child:
-                  BlocBuilder<FootballCountriesCubit, FootballCountriesState>(
-                builder: (context, state) {
-                  if (state is FootballCountriesSuccess) {
-                    for (int i = 0; i < state.response.result.length; i++) {
-                      countries_name
-                          .add(state.response.result[i].countryName.toString());
-                      // countries_name.add(i);
-
-                      // print(
-                      //     "${state.response.result[i].countryName.toString()}, ${i}");
-                    }
-                    return GridView.builder(
-                      // controller: ScrollController(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                      ),
-                      itemCount: state.response.result.length,
-                      itemBuilder: (context, index) {
-                        _country_number = state.response.result.length;
-                        return Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: GestureDetector(
-                            onTap: () {
-                              country_Id =
-                                  state.response!.result[index].countryKey;
-                              print(country_Id);
-                              context
-                                  .read<FootballCountriesCubit>()
-                                  .getCountries();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LeagueScreen(),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
+                  icon: Icon(Icons.location_on),
+                  color: Colors.white,
+                )
+              ],
+            ),
+            Expanded(
+              child: Container(
+                child:
+                    BlocBuilder<FootballCountriesCubit, FootballCountriesState>(
+                  builder: (context, state) {
+                    if (state is FootballCountriesSuccess) {
+                      for (int i = 0; i < state.response.result.length; i++) {
+                        countries_name.add(
+                            state.response.result[i].countryName.toString());
+                      }
+                      return GridView.builder(
+                        controller: _scrollController,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                        ),
+                        itemCount: state.response.result.length,
+                        // key: _country_index,
+                        itemBuilder: (context, index) {
+                          _country_number = state.response.result.length;
+                          return Padding(
+                            padding: const EdgeInsets.all(0),
+                            child: GestureDetector(
+                              onTap: () {
+                                country_Id =
+                                    state.response!.result[index].countryKey;
+                                print(country_Id);
+                                context
+                                    .read<FootballCountriesCubit>()
+                                    .getCountries();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LeagueScreen(),
+                                  ),
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  if (index == _country_index)
+                                    Container(
+                                      width: 80,
+                                      height: rowHeight,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.red, width: 6),
+                                        borderRadius: BorderRadius.circular(8),
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                            state.response.result[index]
+                                                    .countryLogo ??
+                                                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/420px-Flag_of_Cuba.svg.png",
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  if (index != _country_index)
+                                    Container(
+                                      width: 80,
+                                      height: rowHeight,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                            state.response.result[index]
+                                                    .countryLogo ??
+                                                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/420px-Flag_of_Cuba.svg.png",
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  Flexible(
+                                    child: Center(
+                                      child: Text(
                                         state.response.result[index]
-                                                .countryLogo ??
-                                            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/420px-Flag_of_Cuba.svg.png",
-                                      ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Center(
-                                    child: Text(
-                                      state.response.result[index]
-                                              .countryName ??
-                                          "countryName",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontStyle: FontStyle.italic,
-                                        letterSpacing: 0.5,
-                                        wordSpacing: -0.50,
+                                                .countryName ??
+                                            "countryName",
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontStyle: FontStyle.italic,
+                                          letterSpacing: 0.5,
+                                          wordSpacing: -0.50,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  } else if (state is FootballCountriesError) {
-                    return Center(
-                      child: Text(state.errorMessage),
-                    );
-                  } else {
-                    return FutureBuilder<void>(
-                      future:
-                          context.read<FootballCountriesCubit>().getCountries(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
                           );
-                        } else {
-                          return Center(
-                            child:
-                                Text("An error occurred while loading data."),
-                          );
-                        }
-                      },
-                    );
-                  }
-                },
+                        },
+                      );
+                    } else if (state is FootballCountriesError) {
+                      return Center(
+                        child: Text(state.errorMessage),
+                      );
+                    } else {
+                      return FutureBuilder<void>(
+                        future: context
+                            .read<FootballCountriesCubit>()
+                            .getCountries(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            return Center(
+                              child:
+                                  Text("An error occurred while loading data."),
+                            );
+                          }
+                        },
+                      );
+                    }
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
-
-// class DataSearch extends SearchDelegate {
-//   @override
-//   List<Widget>? buildActions(BuildContext context) {
-//     return [
-//       IconButton(
-//           onPressed: () {
-//             query = "";
-//           },
-//           icon: Icon(Icons.close))
-//     ];
-//   }
-
-//   @override
-//   Widget? buildLeading(BuildContext context) {
-//     return IconButton(
-//         onPressed: () {
-//           close(context, null);
-//         },
-//         icon: Icon(Icons.arrow_back));
-//   }
-
-//   @override
-//   Widget buildResults(BuildContext context) {
-//     return Text('lpj,d hgfpe');
-//   }
-
-//   @override
-//   Widget buildSuggestions(BuildContext context) {
-//     return BlocBuilder<FootballCountriesCubit, FootballCountriesState>(
-//       builder: (context, state) {
-//         if (state is FootballCountriesSuccess) {
-//           return GridView.builder(
-//             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//               crossAxisCount: 3,
-//             ),
-//             itemCount: state.response.result.length,
-//             itemBuilder: (context, index) {
-//               return Padding(
-//                 padding: const EdgeInsets.all(8),
-//                 child: GestureDetector(
-//                   onTap: () {
-//                     country_Id = state.response!.result[index].countryKey;
-//                     print(country_Id);
-//                     context.read<FootballCountriesCubit>().getCountries();
-//                     Navigator.push(
-//                       context,
-//                       MaterialPageRoute(
-//                         builder: (context) => LeagueScreen(),
-//                       ),
-//                     );
-//                   },
-//                   child: Column(
-//                     children: [
-//                       Container(
-//                         width: 80,
-//                         height: 80,
-//                         decoration: BoxDecoration(
-//                           borderRadius: BorderRadius.circular(8),
-//                           image: DecorationImage(
-//                             image: NetworkImage(
-//                               state.response.result[index].countryLogo ??
-//                                   "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/420px-Flag_of_Cuba.svg.png",
-//                             ),
-//                             fit: BoxFit.cover,
-//                           ),
-//                         ),
-//                       ),
-//                       Text(
-//                         state.response.result[index].countryName ??
-//                             "countryName",
-//                         style: TextStyle(
-//                           fontSize: 14,
-//                           color: Colors.black,
-//                           fontWeight: FontWeight.bold,
-//                           fontStyle: FontStyle.italic,
-//                           letterSpacing: 0.5,
-//                           wordSpacing: -0.50,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               );
-//             },
-//           );
-//         } else if (state is FootballCountriesError) {
-//           return Center(
-//             child: Text(state.errorMessage),
-//           );
-//         } else {
-//           return FutureBuilder<void>(
-//             future: context.read<FootballCountriesCubit>().getCountries(),
-//             builder: (context, snapshot) {
-//               if (snapshot.connectionState == ConnectionState.waiting) {
-//                 return Center(
-//                   child: CircularProgressIndicator(),
-//                 );
-//               } else {
-//                 return Center(
-//                   child: Text("An error occurred while loading data."),
-//                 );
-//               }
-//             },
-//           );
-//         }
-//       },
-//     );
-//   }
-// }
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:sport_app_semicolon/Cubits/FootballCountries/football_countries_cubit.dart';
-// import 'package:sport_app_semicolon/Data/Repository/get_League_Repo.dart';
-// import 'package:sport_app_semicolon/Functions/DrawerClass.dart';
-// import 'package:sport_app_semicolon/Screens/LeagueScreen.dart';
-
-// class FootballCountriesView extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       drawer: myDrawer(),
-//       appBar: AppBar(
-//         leading: Builder(
-//           builder: (context) {
-//             return IconButton(
-//               color: Colors.black,
-//               onPressed: () {
-//                 Scaffold.of(context).openDrawer();
-//               },
-//               icon: Icon(Icons.menu),
-//             );
-//           },
-//         ),
-//         automaticallyImplyLeading: false,
-//         title: Center(child: Text('Football Countries')),
-//         actions: [
-//           IconButton(
-//             icon: Icon(Icons.search),
-//             onPressed: () {
-//               showSearch(context: context, delegate: DataSearch());
-//             },
-//           )
-//         ],
-//       ),
-//       body: BlocBuilder<FootballCountriesCubit, FootballCountriesState>(
-//         builder: (context, state) {
-//           if (state is FootballCountriesSuccess) {
-//             return GridView.builder(
-//               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//                 crossAxisCount: 3,
-//               ),
-//               itemCount: state.response.result.length,
-//               itemBuilder: (context, index) {
-//                 return Padding(
-//                   padding: const EdgeInsets.all(8),
-//                   child: GestureDetector(
-//                     onTap: () {
-//                       country_Id = state.response!.result[index].countryKey;
-//                       print(country_Id);
-//                       context.read<FootballCountriesCubit>().getCountries();
-//                       Navigator.push(
-//                         context,
-//                         MaterialPageRoute(
-//                           builder: (context) => LeagueScreen(),
-//                         ),
-//                       );
-//                     },
-//                     child: Column(
-//                       children: [
-//                         Container(
-//                           width: 80,
-//                           height: 80,
-//                           decoration: BoxDecoration(
-//                             borderRadius: BorderRadius.circular(8),
-//                             image: DecorationImage(
-//                               image: NetworkImage(
-//                                 state.response.result[index].countryLogo ??
-//                                     "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/420px-Flag_of_Cuba.svg.png",
-//                               ),
-//                               fit: BoxFit.cover,
-//                             ),
-//                           ),
-//                         ),
-//                         Flexible(
-//                           child: Center(
-//                             child: Text(
-//                               state.response.result[index].countryName ??
-//                                   "countryName",
-//                               style: TextStyle(
-//                                 fontSize: 14,
-//                                 color: Colors.black,
-//                                 fontWeight: FontWeight.bold,
-//                                 fontStyle: FontStyle.italic,
-//                                 letterSpacing: 0.5,
-//                                 wordSpacing: -0.50,
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 );
-//               },
-//             );
-//           } else if (state is FootballCountriesError) {
-//             return Center(
-//               child: Text(state.errorMessage),
-//             );
-//           } else {
-//             return FutureBuilder<void>(
-//               future: context.read<FootballCountriesCubit>().getCountries(),
-//               builder: (context, snapshot) {
-//                 if (snapshot.connectionState == ConnectionState.waiting) {
-//                   return Center(
-//                     child: CircularProgressIndicator(),
-//                   );
-//                 } else {
-//                   return Center(
-//                     child: Text("An error occurred while loading data."),
-//                   );
-//                 }
-//               },
-//             );
-//           }
-//         },
-//       ),
-//     );
-//   }
-// }
-
-// class DataSearch extends SearchDelegate {
-//   @override
-//   List<Widget>? buildActions(BuildContext context) {
-//     return [
-//       IconButton(
-//           onPressed: () {
-//             query = "";
-//           },
-//           icon: Icon(Icons.close))
-//     ];
-//   }
-
-//   @override
-//   Widget? buildLeading(BuildContext context) {
-//     return IconButton(
-//         onPressed: () {
-//           close(context, null);
-//         },
-//         icon: Icon(Icons.arrow_back));
-//   }
-
-//   @override
-//   Widget buildResults(BuildContext context) {
-//     return Text('lpj,d hgfpe');
-//   }
-
-//   @override
-//   Widget buildSuggestions(BuildContext context) {
-//     return BlocBuilder<FootballCountriesCubit, FootballCountriesState>(
-//       builder: (context, state) {
-//         if (state is FootballCountriesSuccess) {
-//           return GridView.builder(
-//             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//               crossAxisCount: 3,
-//             ),
-//             itemCount: state.response.result.length,
-//             itemBuilder: (context, index) {
-//               return Padding(
-//                 padding: const EdgeInsets.all(8),
-//                 child: GestureDetector(
-//                   onTap: () {
-//                     country_Id = state.response!.result[index].countryKey;
-//                     print(country_Id);
-//                     context.read<FootballCountriesCubit>().getCountries();
-//                     Navigator.push(
-//                       context,
-//                       MaterialPageRoute(
-//                         builder: (context) => LeagueScreen(),
-//                       ),
-//                     );
-//                   },
-//                   child: Column(
-//                     children: [
-//                       Container(
-//                         width: 80,
-//                         height: 80,
-//                         decoration: BoxDecoration(
-//                           borderRadius: BorderRadius.circular(8),
-//                           image: DecorationImage(
-//                             image: NetworkImage(
-//                               state.response.result[index].countryLogo ??
-//                                   "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/420px-Flag_of_Cuba.svg.png",
-//                             ),
-//                             fit: BoxFit.cover,
-//                           ),
-//                         ),
-//                       ),
-//                       Text(
-//                         state.response.result[index].countryName ??
-//                             "countryName",
-//                         style: TextStyle(
-//                           fontSize: 14,
-//                           color: Colors.black,
-//                           fontWeight: FontWeight.bold,
-//                           fontStyle: FontStyle.italic,
-//                           letterSpacing: 0.5,
-//                           wordSpacing: -0.50,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               );
-//             },
-//           );
-//         } else if (state is FootballCountriesError) {
-//           return Center(
-//             child: Text(state.errorMessage),
-//           );
-//         } else {
-//           return FutureBuilder<void>(
-//             future: context.read<FootballCountriesCubit>().getCountries(),
-//             builder: (context, snapshot) {
-//               if (snapshot.connectionState == ConnectionState.waiting) {
-//                 return Center(
-//                   child: CircularProgressIndicator(),
-//                 );
-//               } else {
-//                 return Center(
-//                   child: Text("An error occurred while loading data."),
-//                 );
-//               }
-//             },
-//           );
-//         }
-//       },
-//     );
-//   }
-// }

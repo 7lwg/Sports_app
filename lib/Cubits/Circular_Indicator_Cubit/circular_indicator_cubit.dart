@@ -12,7 +12,7 @@ class CircularIndicatorCubit extends Cubit<CircularIndicatorState> {
   void Circular() async {
     isLoading = true;
     emit(CircularIndicatorInitial());
-    await Future.delayed(Duration(seconds: 4), () {
+    await Future.delayed(Duration(seconds: 3), () {
       isLoading = false;
       emit(CircularIndicator());
     });

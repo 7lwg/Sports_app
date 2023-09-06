@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 // import 'package:sport_app_semicolon/Classes/DrawerClass.dart';
 
 import 'package:sport_app_semicolon/Cubits/PlayersCubit/players_cubit.dart';
@@ -21,15 +22,15 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           toolbarHeight: MediaQuery.of(context).size.height * 1 / 15,
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.black,
+          backgroundColor: const Color(0xfff0a307),
           title: Text(
             "SPORTS",
-            style: GoogleFonts.lato(color: Colors.white, fontSize: 30),
+            style: GoogleFonts.lato(color: Colors.black, fontSize: 30),
           ),
           centerTitle: true,
           leading: Builder(builder: (context) {
             return IconButton(
-              color: Colors.white,
+              color: Colors.black,
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
@@ -38,17 +39,15 @@ class HomeScreen extends StatelessWidget {
           }),
         ),
         body: Container(
-          color: Colors.white,
+          color: Colors.grey[850],
           height: double.infinity,
           width: double.infinity,
           child: GridView.count(
             physics: NeverScrollableScrollPhysics(),
-            // childAspectRatio: 0.54,
-
             childAspectRatio: ((MediaQuery.of(context).size.width) /
                 (MediaQuery.of(context).size.height -
+                    20 -
                     MediaQuery.of(context).size.height * 1 / 15)),
-
             crossAxisCount: 2,
             children: [
               Padding(
@@ -70,15 +69,18 @@ class HomeScreen extends StatelessWidget {
                             );
                           },
                           child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    "assets/images/football.png",
-                                  ),
-                                  fit: BoxFit.fill),
-                            ),
+                            child: Lottie.asset(
+                                'assets/lottie_animations/football.json'),
+                            // decoration: BoxDecoration(
+                            //   borderRadius: BorderRadius.circular(15),
+                            //   shape: BoxShape.rectangle,
+                            //   // image: DecorationImage(
+                            //   //     image: AssetImage(
+                            //   //       "assets/images/football.png",
+                            //   //     ),
+                            //   //     fit: BoxFit.fill),
+
+                            // ),
                           ),
                         ),
                       ),
@@ -120,15 +122,17 @@ class HomeScreen extends StatelessWidget {
                                 });
                           },
                           child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    "assets/images/basketball.png",
-                                  ),
-                                  fit: BoxFit.fill),
-                            ),
+                            child: Lottie.asset(
+                                'assets/lottie_animations/basketball.json'),
+                            // decoration: BoxDecoration(
+                            //   borderRadius: BorderRadius.circular(15),
+                            //   shape: BoxShape.rectangle,
+                            //   image: DecorationImage(
+                            //       image: AssetImage(
+                            //         "assets/images/basketball.png",
+                            //       ),
+                            //       fit: BoxFit.fill),
+                            // ),
                           ),
                         ),
                       ),
@@ -170,15 +174,8 @@ class HomeScreen extends StatelessWidget {
                                 });
                           },
                           child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    "assets/images/cricket.png",
-                                  ),
-                                  fit: BoxFit.fill),
-                            ),
+                            child: Lottie.asset(
+                                'assets/lottie_animations/cricket.json'),
                           ),
                         ),
                       ),
@@ -221,15 +218,8 @@ class HomeScreen extends StatelessWidget {
                                   });
                             },
                             child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                shape: BoxShape.rectangle,
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/images/tennis.png",
-                                    ),
-                                    fit: BoxFit.fill),
-                              ),
+                              child: Lottie.asset(
+                                  'assets/lottie_animations/tennis.json'),
                             ),
                           ),
                         ),

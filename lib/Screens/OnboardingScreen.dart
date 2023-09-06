@@ -6,7 +6,6 @@ import 'package:sport_app_semicolon/Cubits/SliderCubit/slider_cubit.dart';
 import 'package:sport_app_semicolon/Screens/LoginScreen.dart';
 import 'HomeScreen.dart';
 import 'test.dart';
-// import 'package:sports_app/screens/test.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -16,10 +15,25 @@ class OnboardingScreen extends StatefulWidget {
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-final List<String> imageUrls = [
-  'https://picsum.photos/200/300?image=1',
-  'https://picsum.photos/200/300?image=2',
-  'https://picsum.photos/200/300?image=2',
+final List<String> title = [
+  "Select Your Country",
+  "Discover Exciting Leagues",
+  "Team Profiles",
+  "Player Profiles"
+];
+
+final List<String> subtitle = [
+  "- Choose your favorite football nation to explore leagues, teams, and players.",
+  "- Explore top football leagues from around the world and stay updated with the latest scores and standings.",
+  "- Get to know your favorite teams, their histories, squad details, and recent performances.",
+  "- Dive into the world of football stars. Learn about their careers, achievements, and stats."
+];
+
+final List<String> Illustration = [
+  "- Flags of various countries representing different football nations.",
+  "- Logos of prominent football leagues (e.g., Premier League, La Liga, Serie A).",
+  "- Logos of popular football clubs or a team jersey.",
+  "- Portraits or action shots of iconic football players."
 ];
 
 final CarouselController _controller1 = CarouselController();
@@ -35,26 +49,46 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           builder: (context, state) {
             return CarouselSlider(
                 items: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.red,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.yellow,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.green,
-                  ),
+                  for (int i = 0; i < 4; i++)
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.grey[850],
+                      child: Container(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: Text(
+                                title[i].toString(),
+                                style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ),
+                            SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 1 / 10,
+                            ),
+                            Text(
+                              subtitle[i].toString(),
+                              style:
+                                  TextStyle(fontSize: 25, color: Colors.white),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 10, bottom: 10),
+                              child: Text(
+                                Illustration[i].toString(),
+                                style: TextStyle(
+                                    fontSize: 25, color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                 ],
-                // items: imageUrls
-                //     .map((e) => Image.network(
-                //           e,
-                //           width: double.infinity,
-                //           fit: BoxFit.fill,
-                //         ))
-                //     .toList(),
                 carouselController: _controller1,
                 options: CarouselOptions(
                   height: MediaQuery.of(context).size.height,
@@ -102,7 +136,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 builder: (context, state) {
                   return AnimatedSmoothIndicator(
                     activeIndex: active_page,
-                    count: 3,
+                    count: 4,
                     onDotClicked: (index) => {
                       active_page = index,
                       _controller1.animateToPage(active_page),

@@ -27,12 +27,13 @@ class PlayersScreen extends StatelessWidget {
           );
         }),
         automaticallyImplyLeading: false,
-        toolbarHeight: MediaQuery.of(context).size.height * (1 / 20),
-        backgroundColor: Colors.white,
+        toolbarHeight: MediaQuery.of(context).size.height * (1 / 15),
+        backgroundColor: const Color(0xfff0a307),
         centerTitle: true,
         title: Text('${team_name} Players'),
       ),
       body: Container(
+        color: Colors.grey[850],
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(
@@ -200,6 +201,10 @@ class PlayersScreen extends StatelessWidget {
                                                       height: 5,
                                                     ),
                                                     ElevatedButton(
+                                                        // style: ElevatedButton
+                                                        //     .styleFrom(
+                                                        //         primary:
+                                                        //             const Color(0xfff0a307)),
                                                         onPressed: () {
                                                           Share.share(
                                                               "Name : ${state.playersresponse!.result[index].playerName ?? ""}\nNumber : ${state.playersresponse!.result[index].playerNumber ?? ""}");

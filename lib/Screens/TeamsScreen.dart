@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:sport_app_semicolon/Classes/DrawerClass.dart';
 import 'package:sport_app_semicolon/Cubits/PlayersCubit/players_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_goals_cubit.dart';
 import 'package:sport_app_semicolon/Cubits/TeamsCubit/get_teams_cubit.dart';
@@ -20,16 +19,18 @@ class TeamsScreen extends StatelessWidget {
         child: Stack(children: [
           Scaffold(
             appBar: AppBar(
+              backgroundColor: const Color(0xfff0a307),
               automaticallyImplyLeading: false,
               toolbarHeight: MediaQuery.of(context).size.height * (1 / 50),
               bottom: const TabBar(
+                indicatorColor: Colors.white,
+                labelColor: Colors.white,
                 tabs: [
                   Tab(
                     child: Text(
                       "Teams",
                       style: TextStyle(fontSize: 18),
                     ),
-                    // context.read<GetTeamsCubit>().getTeams(),
                   ),
                   Tab(
                     child: Text(
@@ -43,7 +44,7 @@ class TeamsScreen extends StatelessWidget {
             body: TabBarView(
               children: [
                 Container(
-                  // color: Colors.black,
+                  color: Colors.grey[850],
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   // color: Colors.red,
@@ -94,7 +95,12 @@ class TeamsScreen extends StatelessWidget {
                               child: Column(
                             children: [
                               Expanded(
-                                  child: ListView.builder(
+                                  child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                ),
+                                itemCount: state.teamsresponse.result.length,
                                 itemBuilder: (context, index) {
                                   team_id = state.teamsresponse.result[index]
                                           .teamKey ??
@@ -120,8 +126,7 @@ class TeamsScreen extends StatelessWidget {
                                       );
                                     },
                                     child: Container(
-                                      width: 40,
-                                      height: 40,
+                                      padding: EdgeInsets.all(10),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         border: Border.all(
@@ -130,7 +135,9 @@ class TeamsScreen extends StatelessWidget {
                                         ),
                                       ),
                                       margin: EdgeInsets.all(5),
-                                      child: Row(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Image.network(
                                             state.teamsresponse.result[index]
@@ -142,31 +149,34 @@ class TeamsScreen extends StatelessWidget {
                                               return Image.network(
                                                   "https://upload.wikimedia.org/wikipedia/ar/f/f7/Fifa-logo.png?20140204004927");
                                             },
-                                            width: 50,
-                                            height: 50,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
+                                            width: 70,
+                                            height: 70,
                                           ),
                                           Text(
                                             state.teamsresponse.result[index]
                                                     .teamName ??
                                                 "",
-                                            style: TextStyle(fontSize: 20),
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                         ],
                                       ),
                                     ),
                                   );
                                 },
-                                // itemCount: state.response.result.length,
-                                itemCount: state.teamsresponse.result.length,
                               ))
                             ],
                           ));
                         } else {
                           return Center(
-                            child: Text("Something went wrong"),
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 10),
+                              child: Text(
+                                "Invalid Search",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
                           );
                         }
                       })
@@ -174,7 +184,7 @@ class TeamsScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  // color: Colors.black,
+                  color: Colors.grey[850],
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   // color: Colors.red,
@@ -232,14 +242,16 @@ class TeamsScreen extends StatelessWidget {
                                                         TextStyle(fontSize: 20),
                                                   ),
                                                   Text(
-                                                    "penalty goals" +
+                                                    "penalty goals " +
                                                         state
                                                             .goalsresponse
                                                             .result[index]
                                                             .penaltyGoals
                                                             .toString(),
-                                                    style:
-                                                        TextStyle(fontSize: 13),
+                                                    style: TextStyle(
+                                                        fontSize: 13,
+                                                        color: Color.fromRGBO(
+                                                            0, 0, 0, 0.5)),
                                                   ),
                                                 ],
                                               ),
